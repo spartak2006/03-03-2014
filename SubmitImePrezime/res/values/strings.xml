@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SubmitImePrezime</string>
+    <string name="action_settings">Settings</string>
+    <string name="activity_main_ime_editText"><i>Unesi ime</i></string>
+    <string name="activity_main_prezime_editText"><i>Unesi prezime</i></string>
+    <string name="activity_main_submit_button">Submit!</string>
+    <string name="activity_main_cancel_button"><b>Clear!</b></string>
+    
+
+</resources>
