@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SubmitImePrezime2</string>
+    <string name="action_settings">Settings</string>
+    <string name="activity_main_name_editText"><i>Unesi Ime</i></string>
+    <string name="activity_main_last_name_editText"><i>Unesi Prezime</i></string>
+    <string name="activity_main_adress_editText"><i>Unesi Adresu</i></string>
+    <string name="activity_main_submit_button"><b>Submit!</b></string>
+    <string name="activity_main_clear_button"><b>Clear!</b></string>
+    <string name="activity_second_name_textView"><b>Name!</b></string>
+    <string name="activity_second_last_name_textView"><b>Last name!</b></string>
+    <string name="activity_second_adress_textView"><b>Address!</b></string>
+
+</resources>
