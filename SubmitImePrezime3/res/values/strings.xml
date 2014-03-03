@@ -8,5 +8,6 @@
     <string name="activity_main_address_editText"><i>Unesite adresu</i></string>
     <string name="activity_main_submit_button"><b>Submit</b></string>
     <string name="activity_main_clear_button"><b>Clear</b></string>
+    <string name="activity_main_add_button"><b>Add</b></string>
 
 </resources>

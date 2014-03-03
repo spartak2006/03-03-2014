@@ -1,56 +1,98 @@
 package com.example.submitimeprezime3;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
+import com.example.submitimeprezime3.models.ComparatorModel;
 import com.example.submitimeprezime3.models.UserModel;
 import com.example.submitimeprezime3.utils.C;
 
+import android.R.integer;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class SecondActivity extends BaseActivity {
 
-	private TextView mNameTextView;
-	private TextView mLastNameTextView;
-	private TextView mAddressTextView;
+	private LinearLayout mLinearLayout;
 
-	private UserModel mUserModel;
+	private ArrayList<UserModel> mUserModel;
+
+	private ComparatorModel mCompare;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.second_activity);
-		initUi();
-		Bundle extras = getIntent().getExtras();
-		if (extras != null) {
-			initExtras(extras);
+
+		Intent intent = getIntent();
+		if (intent != null) {
+
+			initExtras(intent);
 
 		}
-		setTitleText();
+		compareUsers();
 
+	}
+
+	private void compareUsers() {
+
+		Collections.sort(mUserModel, new ComparatorModel());
 	}
 
 	@Override
 	public void initUi() {
-		mNameTextView = (TextView) findViewById(R.id.second_activity_name_textView);
-		mLastNameTextView = (TextView) findViewById(R.id.second_activity_last_name_textView);
-		mAddressTextView = (TextView) findViewById(R.id.second_activity_address_textView);
+
+		mLinearLayout = (LinearLayout) findViewById(R.id.activity_second_linear_layout_one);
 
 	}
 
-	private void initExtras(Bundle extras) {
-		mUserModel = extras.getParcelable(C.MAIN_ACTIVITY_BUNDLE_KEY_USER);
+	private void initExtras(Intent intent) {
+		mUserModel = intent
+				.getParcelableArrayListExtra(C.MAIN_ACTIVITY_BUNDLE_KEY_USER);
 
 	}
 
 	private void setTitleText() {
-		mNameTextView.setText(mUserModel.getFirstNameString());
-		mLastNameTextView.setText(mUserModel.getLastNameString());
-		mAddressTextView.setText(mUserModel.getAddressString());
 
-		mNameTextView.setTextSize(40);
-		mLastNameTextView.setTextSize(40);
-		mAddressTextView.setTextSize(40);
+		for (int i = 0; i < mUserModel.size(); i++) {
 
+			tryGetUserModelFromPositionAndShow(i);
+		}
+
+	}
+
+	private void tryGetUserModelFromPositionAndShow(int i) {
+		try {
+			UserModel firstModel = mUserModel.get(mUserModel.size());
+			TextView newTextView = createNewTextViewWithUserModel();
+			newTextView.setText(firstModel.getFirstNameString() + "\n"
+					+ firstModel.getLastNameString() + "\n"
+					+ firstModel.getAddressString());
+			mLinearLayout.addView(newTextView);
+
+		} catch (IndexOutOfBoundsException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private TextView createNewTextViewWithUserModel() {
+
+		final LayoutParams lparams = new LayoutParams(
+				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		final TextView textView = new TextView(this);
+
+		textView.setLayoutParams(lparams);
+		return textView;
 	}
 
 	@Override

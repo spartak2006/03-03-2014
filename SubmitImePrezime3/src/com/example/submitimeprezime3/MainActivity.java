@@ -1,5 +1,7 @@
 package com.example.submitimeprezime3;
 
+import java.util.ArrayList;
+
 import com.example.submitimeprezime3.models.UserModel;
 import com.example.submitimeprezime3.utils.C;
 
@@ -22,6 +24,9 @@ public class MainActivity extends BaseActivity {
 
 	private Button mSubmitButton;
 	private Button mClearButton;
+	private Button mAddButton;
+
+	private ArrayList<UserModel> mUsers = new ArrayList<UserModel>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +45,13 @@ public class MainActivity extends BaseActivity {
 
 		mSubmitButton = (Button) findViewById(R.id.activity_main_submit_button);
 		mClearButton = (Button) findViewById(R.id.activity_main_clear_button);
+		mAddButton = (Button) findViewById(R.id.activity_main_add_button);
 	}
 
 	public void initListener() {
 		mSubmitButton.setOnClickListener(mOnClickListener);
 		mClearButton.setOnClickListener(mOnClickListener);
-
+		mAddButton.setOnClickListener(mOnClickListener);
 	}
 
 	private OnClickListener mOnClickListener = new OnClickListener() {
@@ -54,74 +60,55 @@ public class MainActivity extends BaseActivity {
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.activity_main_submit_button:
-				String tempName = mInputNameEditText.getText().toString();
-				String tempLastName = mInputLastNameEditText.getText()
-						.toString();
-				String tempAddress = mInputAddressEditText.getText().toString();
 
-				if (tempName.equals("") && tempLastName.equals("")
-						&& tempAddress.equals("")) {
-					Toast toast = Toast.makeText(MainActivity.this,
-							"Unesite Ime Prezime i Adresu!", Toast.LENGTH_LONG);
-					toast.setGravity(Gravity.CENTER, 0, 0);
-					toast.show();
-
-				} else if (tempLastName.equals("") && tempAddress.equals("")) {
-					Toast toast = Toast.makeText(MainActivity.this,
-							"Unesite Prezime i Adresu!", Toast.LENGTH_LONG);
-					toast.setGravity(Gravity.CENTER, 0, 0);
-					toast.show();
-
-				} else if (tempName.equals("") && tempAddress.equals("")) {
-					Toast toast = Toast.makeText(MainActivity.this,
-							"Unesite Ime i Adresu!", Toast.LENGTH_LONG);
-					toast.setGravity(Gravity.CENTER, 0, 0);
-					toast.show();
-
-				} else if (tempName.equals("") && tempLastName.equals("")) {
-					Toast toast = Toast.makeText(MainActivity.this,
-							"Unesite Ime i Prezime!", Toast.LENGTH_LONG);
-					toast.setGravity(Gravity.CENTER, 0, 0);
-					toast.show();
-
-				} else if (tempName.equals("")) {
-					Toast toast = Toast.makeText(MainActivity.this,
-							"Unesite Ime!", Toast.LENGTH_LONG);
-					toast.setGravity(Gravity.CENTER, 0, 0);
-					toast.show();
-
-				} else if (tempLastName.equals("")) {
-					Toast toast = Toast.makeText(MainActivity.this,
-							"Unesite Prezime!", Toast.LENGTH_LONG);
-					toast.setGravity(Gravity.CENTER, 0, 0);
-					toast.show();
-				} else if (tempAddress.equals("")) {
-					Toast toast = Toast.makeText(MainActivity.this,
-							"Unesite Adresu!", Toast.LENGTH_LONG);
-					toast.setGravity(Gravity.CENTER, 0, 0);
-					toast.show();
-
-				} else {
-					startSecondActivity(tempName, tempLastName, tempAddress);
-				}
+				startSecondActivity();
 
 				break;
 			case R.id.activity_main_clear_button:
-				mInputNameEditText.setText("");
-				mInputLastNameEditText.setText("");
-				mInputAddressEditText.setText("");
 
+				clearEditTextUser();
+				break;
+			case R.id.activity_main_add_button:
+				String firstName = mInputNameEditText.getText().toString();
+				String lastName = mInputLastNameEditText.getText().toString();
+				String address = mInputAddressEditText.getText().toString();
+				UserModel user = createUser(firstName, lastName, address);
+				addUserToUserList(user);
+
+				Toast.makeText(MainActivity.this,
+						"Trenutno u listi ima: " + mUsers.size(),
+						Toast.LENGTH_LONG).show();
+				clearEditTextUser();
+				break;
 			}
 		}
 
-		private void startSecondActivity(String tempName, String tempLastName,
-				String tempAddress) {
-			Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+		private void clearEditTextUser() {
+			mInputNameEditText.setText("");
+			mInputLastNameEditText.setText("");
+			mInputAddressEditText.setText("");
+
+		}
+
+		private void addUserToUserList(UserModel user) {
+			mUsers.add(user);
+		}
+
+		private UserModel createUser(String firstName, String lastName,
+				String address) {
 			UserModel model = new UserModel();
-			model.setFirstNameString(tempName);
-			model.setLastNameString(tempLastName);
-			model.setAddressString(tempAddress);
-			intent.putExtra(C.MAIN_ACTIVITY_BUNDLE_KEY_USER, model);
+			model.setFirstNameString(firstName);
+			model.setLastNameString(lastName);
+			model.setAddressString(address);
+
+			return model;
+
+		}
+
+		private void startSecondActivity() {
+			Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+
+			intent.putExtra(C.MAIN_ACTIVITY_BUNDLE_KEY_USER, mUsers);
 			startActivity(intent);
 		}
 	};
